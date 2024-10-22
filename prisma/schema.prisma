@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id        Int          @id @default(autoincrement()) // Identificador único para cada usuario.
+  name      String                                      // Nombre del usuario.
+  email     String       @unique                        // Correo electrónico único por usuario.
+  password  String                                      // Contraseña del usuario.
+  roleId    Int                                         // Campo para almacenar la relación con el rol (referencia a Role).
+  role      Role         @relation(fields: [roleId], references: [id]) // Relación con la tabla Role, usando roleId como clave foránea.
+  files     File[]                                     // Relación uno-a-muchos: Un usuario puede subir múltiples archivos.
+  permissions Permission[] // Relación uno-a-muchos: Un usuario puede tener múltiples permisos para archivos.
+}
+
+model Role {
+  id        Int       @id @default(autoincrement())     // Identificador único para cada rol.
+  name      String    @unique                          // Nombre del rol, por ejemplo: 'ADMIN' o 'USER'.
+  users     User[]                                     // Relación uno-a-muchos: Un rol puede estar asociado a varios usuarios.
+}
+
+model File {
+  id        Int       @id @default(autoincrement())     // Identificador único para cada archivo.
+  filename  String                                      // Nombre del archivo.
+  filepath  String                                      // Ruta donde se almacena el archivo.
+  mimetype  String                                      // Tipo MIME del archivo (por ejemplo, 'image/png', 'application/pdf').
+  uploaderId Int                                        // Campo que guarda el ID del usuario que subió el archivo.
+  uploader  User      @relation(fields: [uploaderId], references: [id]) // Relación con User: el usuario que subió el archivo.
+  permissions Permission[] // Relación uno-a-muchos: Un archivo puede tener varios permisos asignados a distintos usuarios.
+}
+
+model Permission {
+  id        Int       @id @default(autoincrement())     // Identificador único para cada permiso.
+  fileId    Int                                         // Campo que almacena el ID del archivo al que se refiere este permiso.
+  file      File      @relation(fields: [fileId], references: [id]) // Relación con la tabla File, usando fileId como clave foránea.
+  userId    Int                                         // Campo que almacena el ID del usuario que tiene el permiso.
+  user      User      @relation(fields: [userId], references: [id]) // Relación con la tabla User, usando userId como clave foránea.
+  canView   Boolean   @default(false)                   // Permiso para visualizar el archivo (true = puede ver, false = no puede ver).
+  canEdit   Boolean   @default(false)                   // Permiso para editar (reemplazar) el archivo.
+  canDelete Boolean   @default(false)                   // Permiso para borrar el archivo.
+}
