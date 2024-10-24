@@ -32,13 +32,13 @@ model Role {
 }
 
 model File {
-  id        Int       @id @default(autoincrement())     // Identificador único para cada archivo.
-  filename  String                                      // Nombre del archivo.
-  filepath  String                                      // Ruta donde se almacena el archivo.
-  mimetype  String                                      // Tipo MIME del archivo (por ejemplo, 'image/png', 'application/pdf').
-  uploaderId Int                                        // Campo que guarda el ID del usuario que subió el archivo.
-  uploader  User      @relation(fields: [uploaderId], references: [id]) // Relación con User: el usuario que subió el archivo.
-  permissions Permission[] // Relación uno-a-muchos: Un archivo puede tener varios permisos asignados a distintos usuarios.
+  id         Int          @id @default(autoincrement())
+  filename   String
+  mimetype   String        // Tipo MIME del archivo.
+  data       Bytes         // Contenido binario del archivo almacenado en la base de datos.
+  uploaderId Int           // ID del usuario que subió el archivo.
+  uploader   User          @relation(fields: [uploaderId], references: [id])
+  permissions Permission[] // Relación uno-a-muchos con permisos.
 }
 
 model Permission {
