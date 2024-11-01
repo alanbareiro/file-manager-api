@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
 
+const authRoutes = require('./src/routes/authRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const roleRoutes = require('./src/routes/roleRoutes');
 const fileRoutes = require('./src/routes/fileRoutes');
@@ -10,7 +11,7 @@ const permissionRoutes = require('./src/routes/permissionRoutes');
 
 const app = express();
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use(express.json());
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+app.use('/auth', authRoutes); 
 app.use('/user', userRoutes);
 app.use('/role', roleRoutes);
 // app.use('/file', fileRoutes);
@@ -31,6 +33,6 @@ app.get('/', (req, res) =>
     res.send("Hello World"));
 
 app.listen(port, () =>
-    console.log(`Server ready on http://localhost:${port}`)
+    console.log(`Server ready on https://file-manager-api-production.up.railway.app/:${port}`)
 );
 
