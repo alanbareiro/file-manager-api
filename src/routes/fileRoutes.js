@@ -13,6 +13,8 @@ module.exports = (upload) => {
     // Ruta para obtener todos los archivos y sus permisos
     router.get('/', fileController.getFiles);
 
+    router.get('/view/:id', fileController.getFileViewById);
+
     // DELETE /file/:id
     router.delete('/:id', fileController.deleteById);
 

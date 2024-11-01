@@ -140,5 +140,6 @@ module.exports = {
     getFiles,
     getFileById,
     deleteById,
-    updateById
+    updateById,
+    getFileById2
 };

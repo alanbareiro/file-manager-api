@@ -60,6 +60,21 @@ const getFileById = async (req, res) => {
     }
 };
 
+const getFileViewById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const file = await fileService.getFileById2(id);
+
+        if (!file) {
+            return res.status(404).json({ error: 'Archivo no encontrado' });
+        }
+        res.send(file.data);
+    } catch (error) {
+        console.error("Error al descargar el archivo:", error);
+        res.status(500).json({ error: 'Error al recuperar el archivo' });
+    }
+};
+
 
 // Controlador para obtener todos los archivos junto con sus permisos
 const getFiles = async (req, res) => {
@@ -110,5 +125,6 @@ module.exports = {
     getFiles,
     getFileById,
     deleteById,
-    updateById
+    updateById,
+    getFileViewById
 };
