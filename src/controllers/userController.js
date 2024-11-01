@@ -36,6 +36,8 @@ const getUserById = async (req, res) => {
 const createUser = async (req, res) => {
     try 
     {
+        console.log("createUser -- controller");
+        
         const {name, email, password, roleId} = req.body;
         const result = await userService.createUser(name, email, password, roleId);
         res.status(201).json(result);
