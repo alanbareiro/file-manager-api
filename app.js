@@ -11,7 +11,7 @@ const permissionRoutes = require('./src/routes/permissionRoutes');
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -33,6 +33,6 @@ app.get('/', (req, res) =>
     res.send("Hello World"));
 
 app.listen(port, () =>
-    console.log(`Server ready on https://file-manager-api-production.up.railway.app/:${port}`)
+    console.log(`Server ready on http://localhost:${port}`)
 );
 
