@@ -68,7 +68,7 @@ const getFileById = async (id) => {
 // Servicio para obtener un archivo por su ID
 const getFileById2 = async (id) => {
     try {
-        return await prisma.file.findUnique({ where: { id } });
+        return await prisma.file.findUnique({ where: { id: parseInt(id) } });
     } catch (error) {
         console.error("Error obteniendo el archivo:", error);
         throw error;
