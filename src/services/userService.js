@@ -10,7 +10,7 @@ const createUser = async (name, email, password, roleName) => {
             name,
             email,
             password: hashedPassword,
-            roleId: roleName.name == "Admin" ? 1 : 1,
+            roleId: roleName.name == "Admin" ? 1 : 2,
         }
     });
 };
