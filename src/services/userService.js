@@ -2,12 +2,13 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const createUser = async (name, email, password, roleName) => {
+    const hashedPassword = await bcrypt.hash(password, 10); // Encripta la contraseña con un factor de costo de 10.
     console.log("createUser --> service")
     return await prisma.user.create({
         data:{
             name,
             email,
-            password,
+            password: hashedPassword,
             roleId: roleName.name == "Admin" ? 1 : 1,
         }
     });
